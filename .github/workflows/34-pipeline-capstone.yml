@@ -1,0 +1,82 @@
+name: 34 - Pipeline Capstone
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: capstone-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+      - run: npm install
+      - run: npm run lint
+
+  matrix-tests:
+    needs: lint
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [18, 20]
+        os: [ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - run: npm install
+      - run: npm test
+
+  package:
+    needs: matrix-tests
+    runs-on: ubuntu-latest
+    outputs:
+      bundle_sha: ${{ steps.build_meta.outputs.sha }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: build_meta
+        run: echo "sha=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+      - name: Bundle Code
+        run: |
+          mkdir dist
+          cp -r src/ dist/
+          echo "Production Release: ${{ steps.build_meta.outputs.sha }}" > dist/RELEASE.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-dist-${{ steps.build_meta.outputs.sha }}
+          path: dist/
+          retention-days: 5
+
+  deploy:
+    needs: package
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://my-production-app.example.com
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-dist-${{ needs.package.outputs.bundle_sha }}
+          path: deployed-dist/
+      - name: Execute Deployment
+        run: |
+          echo "Deploying SHA ${{ needs.package.outputs.bundle_sha }} to Production..."
+          cat deployed-dist/RELEASE.txt
+          node deployed-dist/src/app.js
