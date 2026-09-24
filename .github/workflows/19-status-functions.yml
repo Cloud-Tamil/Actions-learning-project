@@ -1,0 +1,19 @@
+name: 19 - Status Functions
+on: workflow_dispatch
+
+jobs:
+  status-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Simulated Error Step
+        id: error_step
+        run: exit 1
+        continue-on-error: true
+
+      - name: Runs on previous failure
+        if: steps.error_step.outcome == 'failure'
+        run: echo "Detected failure in error_step."
+
+      - name: Run Always Cleanup
+        if: always()
+        run: echo "This runs unconditionally, even during job failure."
