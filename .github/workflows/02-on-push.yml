@@ -1,0 +1,12 @@
+name: 02 - Trigger on Push
+on: []
+
+jobs:
+  inspect-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Echo Commit Metadata
+        run: |
+          echo "Event: push"
+          echo "Target Branch/Ref: $GITHUB_REF"
+          echo "Commit SHA: $GITHUB_SHA"
