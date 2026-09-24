@@ -1,0 +1,16 @@
+name: 10 - Checkout Repository Code
+on: workflow_dispatch
+
+jobs:
+  clone-code:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code with Full History
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify Cloned Files
+        run: |
+          ls -la
+          git status
