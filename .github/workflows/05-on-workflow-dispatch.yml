@@ -1,0 +1,26 @@
+name: 05 - Workflow Dispatch Inputs
+on:
+  workflow_dispatch:
+    inputs:
+      target_env:
+        description: 'Target environment'
+        type: choice
+        required: true
+        options:
+          - dev
+          - staging
+          - prod
+      run_diagnostics:
+        description: 'Enable diagnostics mode'
+        type: boolean
+        required: false
+        default: false
+
+jobs:
+  manual-run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Output Form Selections
+        run: |
+          echo "Target Environment: ${{ inputs.target_env }}"
+          echo "Diagnostics Enabled: ${{ inputs.run_diagnostics }}"
