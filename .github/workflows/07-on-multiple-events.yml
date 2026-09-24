@@ -1,0 +1,14 @@
+name: 07 - Multiple Event Triggers
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  multi-event-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Log Trigger Event
+        run: echo "Workflow triggered by event: ${{ github.event_name }}"
