@@ -1,0 +1,18 @@
+name: 20 - Inter-Job Outputs
+on: workflow_dispatch
+
+jobs:
+  build-meta:
+    runs-on: ubuntu-latest
+    outputs:
+      artifact_version: ${{ steps.version_gen.outputs.app_version }}
+    steps:
+      - id: version_gen
+        run: echo "app_version=v2.1.0-build-${{ github.run_number }}" >> "$GITHUB_OUTPUT"
+
+  use-meta:
+    needs: build-meta
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print Derived Output
+        run: echo "Downstream consumed version: ${{ needs.build-meta.outputs.artifact_version }}"
