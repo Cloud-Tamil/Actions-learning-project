@@ -1,0 +1,19 @@
+name: 26 - Matrix Artifacts with Retention
+on: workflow_dispatch
+
+jobs:
+  matrix-packaging:
+    strategy:
+      matrix:
+        target: [client, server]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate Build Package
+        run: |
+          mkdir -p output
+          echo "Target package: ${{ matrix.target }}" > output/${{ matrix.target }}.log
+      - uses: actions/upload-artifact@v4
+        with:
+          name: package-${{ matrix.target }}
+          path: output/
+          retention-days: 2 # Reduced retention saves cloud storage
