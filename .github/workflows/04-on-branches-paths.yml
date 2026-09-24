@@ -1,0 +1,17 @@
+name: 04 - Branch and Path Filters
+on:
+  push:
+    branches:
+      - main
+      - 'releases/**'
+    paths:
+      - 'src/**'
+      - 'package.json'
+      - '!src/**/*.md'
+
+jobs:
+  filtered-run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Path Match Notification
+        run: echo "Code changes detected inside src/ or package.json on a tracked branch."
