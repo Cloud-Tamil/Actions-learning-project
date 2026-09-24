@@ -1,0 +1,16 @@
+name: 03 - Trigger on Pull Request
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches:
+      - main
+
+jobs:
+  pr-inspector:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Display PR Metadata
+        run: |
+          echo "PR Number: ${{ github.event.pull_request.number }}"
+          echo "Source: ${{ github.head_ref }}"
+          echo "Target: ${{ github.base_ref }}"
