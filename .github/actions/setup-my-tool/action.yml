@@ -1,0 +1,14 @@
+name: 'Setup Custom Local Tool'
+description: 'Example composite action bundled inside the repo'
+inputs:
+  tool-version:
+    description: 'Version of tool to initialize'
+    required: false
+    default: '1.0.0'
+runs:
+  using: 'composite'
+  steps:
+    - shell: bash
+      run: |
+        echo "Composite action executing."
+        echo "Tool version initialized: ${{ inputs.tool-version }}"
