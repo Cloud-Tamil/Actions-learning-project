@@ -1,0 +1,12 @@
+name: 31 - Deployment Environments
+on: workflow_dispatch
+
+jobs:
+  deploy-target:
+    runs-on: ubuntu-latest
+    # Requires an environment named 'production' in Repo Settings > Environments
+    environment:
+      name: production
+      url: https://my-production-app.example.com
+    steps:
+      - run: echo "Deployed to protected production environment."
