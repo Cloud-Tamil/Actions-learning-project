@@ -1,0 +1,16 @@
+name: 11 - Setup Node.js Runtime
+on: workflow_dispatch
+
+jobs:
+  node-runtime:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Check Tool Versions
+        run: |
+          node -v
+          npm -v
