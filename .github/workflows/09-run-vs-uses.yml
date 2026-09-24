@@ -1,0 +1,15 @@
+name: 09 - Shell Run vs Action Uses
+on: workflow_dispatch
+
+jobs:
+  syntax-distinction:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Using a packaged Action
+        uses: actions/checkout@v4
+
+      - name: Running raw shell commands
+        run: |
+          echo "Current working directory:"
+          pwd
+          node -v
