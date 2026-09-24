@@ -1,0 +1,17 @@
+name: 33 - Timeouts and Failure Handling
+on: workflow_dispatch
+
+jobs:
+  resilient-pipeline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Transient Step (Tolerates Failure)
+        timeout-minutes: 2
+        continue-on-error: true
+        run: |
+          echo "Simulating failure step..."
+          exit 1
+
+      - name: Next Step
+        run: echo "This step runs even though the previous step failed."
