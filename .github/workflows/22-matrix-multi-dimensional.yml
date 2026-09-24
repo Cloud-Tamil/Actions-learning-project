@@ -1,0 +1,19 @@
+name: 22 - Multi Dimensional Matrix
+on: workflow_dispatch
+
+jobs:
+  matrix-multi:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        node-version: [18, 20]
+        exclude:
+          - os: windows-latest
+            node-version: 18
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: node -e "console.log('Matrix item verified')"
