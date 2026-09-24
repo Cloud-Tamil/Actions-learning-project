@@ -1,0 +1,20 @@
+name: 17 - Sequential Needs Dependencies
+on: workflow_dispatch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Step 1: Building artifacts..."
+
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Step 2: Testing artifacts after build success..."
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Step 3: Deploying after tests pass..."
