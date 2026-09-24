@@ -1,0 +1,27 @@
+name: 25 - Artifacts Basics
+on: workflow_dispatch
+
+jobs:
+  create-artifact:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile Distributable
+        run: |
+          mkdir dist
+          cp src/app.js dist/app.bundle.js
+      - uses: actions/upload-artifact@v4
+        with:
+          name: compiled-app
+          path: dist/
+          retention-days: 7
+
+  consume-artifact:
+    needs: create-artifact
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: compiled-app
+          path: downloaded/
+      - run: cat downloaded/app.bundle.js
