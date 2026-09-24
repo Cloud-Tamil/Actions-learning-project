@@ -1,0 +1,13 @@
+name: 08 - Runner Context and OS
+on: workflow_dispatch
+
+jobs:
+  inspect-runner:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Runner Architecture Specs
+        run: |
+          echo "Runner OS: ${{ runner.os }}"
+          echo "Runner Arch: ${{ runner.arch }}"
+          echo "Workspace Directory: ${{ runner.workspace }}"
+          echo "Temp Directory: ${{ runner.temp }}"
