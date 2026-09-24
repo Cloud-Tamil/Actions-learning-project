@@ -1,0 +1,16 @@
+name: 13 - Context Inspection
+on: workflow_dispatch
+
+jobs:
+  display-contexts:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print Context Variables
+        env:
+          ACTOR: ${{ github.actor }}
+          REPO: ${{ github.repository }}
+          JOB_ID: ${{ github.job }}
+        run: |
+          echo "Actor: $ACTOR"
+          echo "Repository: $REPO"
+          echo "Job ID: $JOB_ID"
