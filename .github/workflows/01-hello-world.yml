@@ -1,0 +1,9 @@
+name: 01 - Hello World
+on: workflow_dispatch
+
+jobs:
+  greet:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print Greeting
+        run: echo "Hello, World! GitHub Actions workflow is running successfully."
