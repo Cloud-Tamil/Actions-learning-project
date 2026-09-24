@@ -1,0 +1,9 @@
+name: 27 - Reusable Workflow Caller
+on: workflow_dispatch
+
+jobs:
+  call-child-workflow:
+    uses: ./.github/workflows/28-reusable-workflow-callee.yml
+    with:
+      deployment-tier: 'staging'
+      debug-mode: true
