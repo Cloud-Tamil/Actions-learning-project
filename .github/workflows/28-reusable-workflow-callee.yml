@@ -1,0 +1,21 @@
+name: 28 - Reusable Workflow Callee
+on:
+  workflow_call:
+    inputs:
+      deployment-tier:
+        required: true
+        type: string
+      debug-mode:
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  execute-called-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Output Ingested Reusable Parameters
+        run: |
+          echo "Child workflow called."
+          echo "Tier: ${{ inputs.deployment-tier }}"
+          echo "Debug: ${{ inputs.debug-mode }}"
