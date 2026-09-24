@@ -1,0 +1,14 @@
+name: 30 - Least-Privilege Permissions
+on: workflow_dispatch
+
+# Explicitly scopes down the automated GITHUB_TOKEN
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  verify-permissions:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: echo "GITHUB_TOKEN explicitly limited to read contents and write issues."
