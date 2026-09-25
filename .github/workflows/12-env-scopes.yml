@@ -84,13 +84,7 @@ jobs:
       SCOPE: "job-level"
 
     steps:
-
       - name: Inspect Job 3
-        # STEP-LEVEL variables
-        env:
-          NAME: "Teacher"
-          SCOPE: "step-level"
-
         run: |
           echo "===== JOB 3 ====="
           echo "SCOPE: $SCOPE"
