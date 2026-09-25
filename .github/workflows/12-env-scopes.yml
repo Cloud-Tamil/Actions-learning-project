@@ -1,4 +1,3 @@
-```yaml
 name: 12 - Environment Variable Scopes
 
 on:
@@ -98,4 +97,3 @@ jobs:
           echo "STAGE: $STAGE"
           echo "GLOBAL_FLAG: $GLOBAL_FLAG"
           echo "NAME: $NAME"
-```
