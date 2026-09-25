@@ -26,3 +26,8 @@ jobs:
         env:
           GITHUB_CONTEXT: ${{ toJSON(github) }}
         run: echo "$GITHUB_CONTEXT"
+
+      - name: Dump full runner context
+        env:
+          RUNNER_DATA: ${{ toJSON(runner) }}
+        run: echo "$RUNNER_DATA"
