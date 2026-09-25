@@ -1,16 +1,28 @@
-name: 13 - Context Inspection
+name: 13 - Contexts
+
 on: workflow_dispatch
 
 jobs:
-  display-contexts:
+  explore-contexts:
     runs-on: ubuntu-latest
     steps:
-      - name: Print Context Variables
-        env:
-          ACTOR: ${{ github.actor }}
-          REPO: ${{ github.repository }}
-          JOB_ID: ${{ github.job }}
+      - name: Common github context values
         run: |
-          echo "Actor: $ACTOR"
-          echo "Repository: $REPO"
-          echo "Job ID: $JOB_ID"
+          echo "Repository : ${{ github.repository }}"
+          echo "Actor      : ${{ github.actor }}"
+          echo "Event      : ${{ github.event_name }}"
+          echo "Ref name   : ${{ github.ref_name }}"
+          echo "SHA        : ${{ github.sha }}"
+          echo "Run number : ${{ github.run_number }}"   # increments each run
+          echo "Workspace  : ${{ github.workspace }}"
+
+      - name: Runner context
+        run: |
+          echo "Runner OS   : ${{ runner.os }}"
+          echo "Runner arch : ${{ runner.arch }}"
+
+      # Dump the ENTIRE github context as JSON — great for debugging/learning
+      - name: Dump full github context
+        env:
+          GITHUB_CONTEXT: ${{ toJSON(github) }}
+        run: echo "$GITHUB_CONTEXT"
