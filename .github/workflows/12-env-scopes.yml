@@ -52,3 +52,25 @@ jobs:
           echo "SCOPE: $SCOPE"
           echo "STAGE: $STAGE"
           echo "GLOBAL_FLAG: $GLOBAL_FLAG"
+  
+  job2:
+    name: final Scopes
+    runs-on: ubuntu-latest
+
+    # Job-level variable
+    env:
+      SCOPE: "job-level"
+
+    steps:
+      - name: Inspect Job 2
+        # Step-level variable
+        env:
+          NAME: Teacher
+          SCOPE: "step-level"
+
+        run: |
+          echo "===== JOB 2 ====="
+          echo "SCOPE: $SCOPE"
+          echo "STAGE: $STAGE"
+          echo "GLOBAL_FLAG: $GLOBAL_FLAG"
+
