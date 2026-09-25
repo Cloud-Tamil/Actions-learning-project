@@ -1,5 +1,5 @@
 name: 02 - Trigger on Push
-on: []
+on: [push]                                             # Run this workflow whenever a push event happens in the repository.
 
 jobs:
   inspect-push:
