@@ -1,4 +1,4 @@
-name: 12 - Variable Scopes
+name: 12 - Environment Scopes
 
 on:
   workflow_dispatch:
