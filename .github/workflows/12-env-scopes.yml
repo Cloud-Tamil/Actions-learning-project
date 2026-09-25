@@ -6,7 +6,7 @@ env:
   STAGE: global
   GLOBAL_FLAG: "true"
 
-jobs:
+jobs1:
   test-scopes:
     runs-on: ubuntu-latest
     env:
@@ -19,7 +19,7 @@ jobs:
         run: |
           echo "Current SCOPE (should be 'step-level'): $SCOPE"
           echo "Global flag: $GLOBAL_FLAG"
-jobs:
+jobs2:
   build-scopes:
     runs-on: ubuntu-latest
     env:
