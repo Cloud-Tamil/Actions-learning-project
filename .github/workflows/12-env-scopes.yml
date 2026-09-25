@@ -2,7 +2,8 @@ name: 12 - Environment Variable Scopes
 on: workflow_dispatch
 
 env:
-  SCOPE: "workflow-level"
+  SCOPE: "workflow-level"          # Workflow scope -> visible to all jobs&steps
+  STAGE: global
   GLOBAL_FLAG: "true"
 
 jobs:
