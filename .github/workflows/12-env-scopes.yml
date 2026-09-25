@@ -3,26 +3,36 @@ name: 12 - Environment Variable Scopes
 on:
   workflow_dispatch:
 
-# Workflow-level variables
+# ============================================================
+# WORKFLOW-LEVEL ENVIRONMENT VARIABLES
+# Available to ALL jobs and steps
+# ============================================================
 env:
   SCOPE: "workflow-level"
   STAGE: "global"
-  GLOBAL_FLAG: "true"
+  GLOBAL_FLAG: "True"
 
 jobs:
 
+  # ==========================================================
+  # JOB 1
+  # Demonstrates workflow-level → job-level → step-level
+  # ==========================================================
   job1:
     name: Test Scopes
     runs-on: ubuntu-latest
 
-    # Job-level variables
+    # JOB-LEVEL variables
+    # These override workflow-level variables
     env:
       NAME: "Test"
       SCOPE: "job-level"
 
     steps:
+
       - name: Inspect Job 1
-        # Step-level variable
+        # STEP-LEVEL variable
+        # This overrides the job-level SCOPE
         env:
           SCOPE: "step-level"
 
@@ -33,17 +43,23 @@ jobs:
           echo "GLOBAL_FLAG: $GLOBAL_FLAG"
           echo "NAME: $NAME"
 
-  job3:
+
+  # ==========================================================
+  # JOB 2
+  # Demonstrates job-level SCOPE without NAME
+  # ==========================================================
+  job2:
     name: Build Scopes
     runs-on: ubuntu-latest
 
-    # Job-level variable
+    # JOB-LEVEL variable
     env:
       SCOPE: "job-level"
 
     steps:
+
       - name: Inspect Job 2
-        # Step-level variable
+        # STEP-LEVEL variable
         env:
           SCOPE: "step-level"
 
@@ -52,25 +68,32 @@ jobs:
           echo "SCOPE: $SCOPE"
           echo "STAGE: $STAGE"
           echo "GLOBAL_FLAG: $GLOBAL_FLAG"
-  
-  job2:
-    name: final Scopes
+
+
+  # ==========================================================
+  # JOB 3
+  # Demonstrates overriding NAME at STEP level
+  # ==========================================================
+  job3:
+    name: Final Scopes
     runs-on: ubuntu-latest
 
-    # Job-level variable
+    # JOB-LEVEL variables
     env:
+      NAME: "Student"
       SCOPE: "job-level"
 
     steps:
-      - name: Inspect Job 2
-        # Step-level variable
+
+      - name: Inspect Job 3
+        # STEP-LEVEL variables
         env:
-          NAME: Teacher
+          NAME: "Teacher"
           SCOPE: "step-level"
 
         run: |
-          echo "===== JOB 2 ====="
+          echo "===== JOB 3 ====="
           echo "SCOPE: $SCOPE"
           echo "STAGE: $STAGE"
           echo "GLOBAL_FLAG: $GLOBAL_FLAG"
-
+          echo "NAME: $NAME"
