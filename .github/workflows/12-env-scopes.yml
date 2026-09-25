@@ -1,3 +1,4 @@
+```yaml
 name: 12 - Environment Variable Scopes
 
 on:
@@ -10,7 +11,7 @@ on:
 env:
   SCOPE: "workflow-level"
   STAGE: "global"
-  GLOBAL_FLAG: "True"
+  GLOBAL_FLAG: "true"
 
 jobs:
 
@@ -77,11 +78,24 @@ jobs:
   job3:
     name: Final Scopes
     runs-on: ubuntu-latest
+
+    # JOB-LEVEL variables
+    env:
+      NAME: "Student"
+      SCOPE: "job-level"
+
     steps:
+
       - name: Inspect Job 3
+        # STEP-LEVEL variables
+        env:
+          NAME: "Teacher"
+          SCOPE: "step-level"
+
         run: |
           echo "===== JOB 3 ====="
           echo "SCOPE: $SCOPE"
           echo "STAGE: $STAGE"
           echo "GLOBAL_FLAG: $GLOBAL_FLAG"
           echo "NAME: $NAME"
+```
