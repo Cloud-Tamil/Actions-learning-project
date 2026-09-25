@@ -77,12 +77,6 @@ jobs:
   job3:
     name: Final Scopes
     runs-on: ubuntu-latest
-
-    # JOB-LEVEL variables
-    env:
-      NAME: "Student"
-      SCOPE: "job-level"
-
     steps:
       - name: Inspect Job 3
         run: |
