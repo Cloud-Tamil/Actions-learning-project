@@ -20,7 +20,7 @@ jobs:
           echo "Current SCOPE (should be 'step-level'): $SCOPE"
           echo "Global flag: $GLOBAL_FLAG"
 jobs:
-  test-scopes:
+  build-scopes:
     runs-on: ubuntu-latest
     env:
       SCOPE: "job-level"
