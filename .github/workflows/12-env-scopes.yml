@@ -33,7 +33,7 @@ jobs:
           echo "GLOBAL_FLAG: $GLOBAL_FLAG"
           echo "NAME: $NAME"
 
-  job2:
+  job3:
     name: Build Scopes
     runs-on: ubuntu-latest
 
