@@ -1,9 +1,9 @@
 name: 01 - Hello World
-on: workflow_dispatch
-
-jobs:
+on: [workflow_dispatch]                        # Means for run the workflow manually.
+ 
+jobs:                                          # A group of tasks that Github actions executes together.
   greet:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest                     # Run this job on a GitHub-hosted Ubuntu Linux machine.
     steps:
       - name: Print Greeting
         run: echo "Hello, World! GitHub Actions workflow is running successfully."
