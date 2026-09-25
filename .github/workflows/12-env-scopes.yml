@@ -1,45 +1,54 @@
-name: 12 - Environment Scopes
+name: 12 - Environment Variable Scopes
 
 on:
   workflow_dispatch:
 
-# Workflow-level environment variables
+# Workflow-level variables
 env:
   SCOPE: "workflow-level"
   STAGE: "global"
   GLOBAL_FLAG: "true"
-  
+
 jobs:
+
   job1:
     name: Test Scopes
     runs-on: ubuntu-latest
-    # Job-level environment variables
+
+    # Job-level variables
     env:
       NAME: "Test"
       SCOPE: "job-level"
+
     steps:
-      - name: Inspect Precedence
-        # Step-level environment variable
+      - name: Inspect Job 1
+        # Step-level variable
         env:
           SCOPE: "step-level"
-        run: |
-          echo "Current SCOPE (should be 'step-level'): $SCOPE"
-          echo "Global flag: $GLOBAL_FLAG"
-          echo "Stage: $STAGE"
-          echo "Name: $NAME"
 
-   Job:
+        run: |
+          echo "===== JOB 1 ====="
+          echo "SCOPE: $SCOPE"
+          echo "STAGE: $STAGE"
+          echo "GLOBAL_FLAG: $GLOBAL_FLAG"
+          echo "NAME: $NAME"
+
+  job2:
     name: Build Scopes
     runs-on: ubuntu-latest
-    # Job-level environment variable
+
+    # Job-level variable
     env:
       SCOPE: "job-level"
+
     steps:
-      - name: Inspect Precedence
-        # Step-level environment variable
+      - name: Inspect Job 2
+        # Step-level variable
         env:
           SCOPE: "step-level"
+
         run: |
-          echo "Current SCOPE (should be 'step-level'): $SCOPE"
-          echo "Global flag: $GLOBAL_FLAG"
-          echo "Stage: $STAGE"
+          echo "===== JOB 2 ====="
+          echo "SCOPE: $SCOPE"
+          echo "STAGE: $STAGE"
+          echo "GLOBAL_FLAG: $GLOBAL_FLAG"
