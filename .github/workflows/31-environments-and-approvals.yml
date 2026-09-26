@@ -1,12 +1,13 @@
-name: 31 - Deployment Environments
+name: 31 Environments and Approvals
 on: workflow_dispatch
 
 jobs:
-  deploy-target:
+  deploy-prod:
     runs-on: ubuntu-latest
-    # Requires an environment named 'production' in Repo Settings > Environments
+    # Requires configuration in Repository -> Settings -> Environments -> 'production'
     environment:
       name: production
-      url: https://my-production-app.example.com
+      url: https://example.com/health
     steps:
-      - run: echo "Deployed to protected production environment."
+      - name: Production deploy
+        run: echo "Deployed to production after required approvals passed"
