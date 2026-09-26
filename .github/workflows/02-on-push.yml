@@ -1,12 +1,9 @@
-name: 02 - Trigger on Push
-on: []                                             # Run this workflow whenever a push event happens in the repository.
+name: 02 On Push
+on: [push]
 
 jobs:
   inspect-push:
     runs-on: ubuntu-latest
     steps:
-      - name: Echo Commit Metadata
-        run: |
-          echo "Event: push"
-          echo "Target Branch/Ref: $GITHUB_REF"
-          echo "Commit SHA: $GITHUB_SHA"
+      - name: Report trigger
+        run: echo "Code pushed by ${{ github.actor }} on branch ${{ github.ref_name }}"
