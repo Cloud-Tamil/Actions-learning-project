@@ -1,19 +1,17 @@
-name: 26 - Matrix Artifacts with Retention
+name: 26 Artifacts Matrix Retention
 on: workflow_dispatch
 
 jobs:
-  matrix-packaging:
+  build-platforms:
     strategy:
       matrix:
-        target: [client, server]
+        target: [linux, win]
     runs-on: ubuntu-latest
     steps:
-      - name: Generate Build Package
-        run: |
-          mkdir -p output
-          echo "Target package: ${{ matrix.target }}" > output/${{ matrix.target }}.log
+      - run: echo "Binary for ${{ matrix.target }}" > binary.txt
       - uses: actions/upload-artifact@v4
         with:
-          name: package-${{ matrix.target }}
-          path: output/
-          retention-days: 2 # Reduced retention saves cloud storage
+          # Unique names prevent matrix output overwrite
+          name: binary-${{ matrix.target }}
+          path: binary.txt
+          retention-days: 5
