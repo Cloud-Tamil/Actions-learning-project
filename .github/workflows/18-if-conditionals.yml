@@ -1,14 +1,17 @@
-name: 18 - Conditional Execution
-on: [push, workflow_dispatch]
+name: 18 If Conditionals
+on:
+  push:
+    branches: [main, dev]
+  workflow_dispatch:
 
 jobs:
-  conditional-runner:
+  branch-check:
     runs-on: ubuntu-latest
     steps:
-      - name: Run only on Main
+      - name: Run only on main
         if: github.ref == 'refs/heads/main'
-        run: echo "This step runs because branch is main."
+        run: echo "Production branch detected"
 
-      - name: Run only on Workflow Dispatch
+      - name: Run only on manual trigger
         if: github.event_name == 'workflow_dispatch'
-        run: echo "This step runs only when triggered manually via web UI."
+        run: echo "Manual execution detected"
