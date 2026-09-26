@@ -1,16 +1,14 @@
-name: 11 - Setup Node.js Runtime
+name: 11 Setup Node Tooling
 on: workflow_dispatch
 
 jobs:
-  node-runtime:
+  configure-node:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Install Node 20
         uses: actions/setup-node@v4
         with:
-          node-version: 20
-      - name: Check Tool Versions
-        run: |
-          node -v
-          npm -v
+          node-version: '20'
+          cache: 'npm' # Automatically caches ~/.npm if package-lock.json exists
+      - run: node -e "console.log('Node environment ready')"
