@@ -1,16 +1,25 @@
-name: 24 - Dependency Caching
+name: 24 Cache Dependencies
 on: workflow_dispatch
 
 jobs:
-  cache-npm:
+  cache-job:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Setup Cache Step
+      - name: Cache dependencies folder
         uses: actions/cache@v4
+        id: cache-step
         with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package.json') }}
+          path: ~/.cache-demo
+          key: ${{ runner.os }}-demo-${{ hashFiles('**/package.json') }}
           restore-keys: |
-            ${{ runner.os }}-node-
-      - run: npm install
+            ${{ runner.os }}-demo-
+
+      - name: Populate cache if miss
+        if: steps.cache-step.outputs.cache-hit != 'true'
+        run: |
+          mkdir -p ~/.cache-demo
+          echo "Cached content created at $(date)" > ~/.cache-demo/data.txt
+
+      - name: Verify cached content
+        run: cat ~/.cache-demo/data.txt
