@@ -1,21 +1,22 @@
-name: 28 - Reusable Workflow Callee
+name: 28 Reusable Workflow Callee
 on:
   workflow_call:
     inputs:
-      deployment-tier:
+      target-environment:
         required: true
         type: string
-      debug-mode:
-        required: false
-        type: boolean
-        default: false
+    outputs:
+      status-result:
+        description: "Status outcome"
+        value: ${{ jobs.reusable-job.outputs.status }}
 
 jobs:
-  execute-called-job:
+  reusable-job:
     runs-on: ubuntu-latest
+    outputs:
+      status: ${{ steps.step-out.outputs.status }}
     steps:
-      - name: Output Ingested Reusable Parameters
+      - id: step-out
         run: |
-          echo "Child workflow called."
-          echo "Tier: ${{ inputs.deployment-tier }}"
-          echo "Debug: ${{ inputs.debug-mode }}"
+          echo "Executing inside reusable workflow for ${{ inputs.target-environment }}"
+          echo "status=complete" >> "$GITHUB_OUTPUT"
