@@ -1,21 +1,18 @@
-name: 16 - Parallel Jobs
+name: 16 Parallel Jobs
 on: workflow_dispatch
 
 jobs:
-  lint-job:
+  lint-backend:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - run: npm install && npm run lint
+      - run: echo "Running backend linting in parallel"
 
-  unit-test-job:
+  lint-frontend:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - run: npm install && npm test
+      - run: echo "Running frontend linting in parallel"
+
+  security-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Running SAST scan in parallel"
