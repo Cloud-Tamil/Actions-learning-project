@@ -1,18 +1,20 @@
-name: 20 - Inter-Job Outputs
+name: 20 Job Outputs
 on: workflow_dispatch
 
 jobs:
-  build-meta:
+  producer:
     runs-on: ubuntu-latest
     outputs:
-      artifact_version: ${{ steps.version_gen.outputs.app_version }}
+      generated_hash: ${{ steps.step1.outputs.hash }}
     steps:
-      - id: version_gen
-        run: echo "app_version=v2.1.0-build-${{ github.run_number }}" >> "$GITHUB_OUTPUT"
+      - id: step1
+        run: |
+          COMPUTED_HASH=$(echo "action-payload" | sha256sum | awk '{print $1}')
+          echo "hash=$COMPUTED_HASH" >> "$GITHUB_OUTPUT"
 
-  use-meta:
-    needs: build-meta
+  consumer:
     runs-on: ubuntu-latest
+    needs: producer
     steps:
-      - name: Print Derived Output
-        run: echo "Downstream consumed version: ${{ needs.build-meta.outputs.artifact_version }}"
+      - name: Read upstream value
+        run: echo "Received hash from producer: ${{ needs.producer.outputs.generated_hash }}"
