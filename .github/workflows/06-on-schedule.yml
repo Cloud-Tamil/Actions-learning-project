@@ -1,11 +1,13 @@
-name: 06 - Scheduled Cron
+name: 06 Scheduled Cron
 on:
   schedule:
-    - cron: '0 4 * * 1-5' # 04:00 UTC Monday-Friday
+    # Runs at 02:00 UTC every Monday through Friday
+    - cron: '0 2 * * 1-5'
+  workflow_dispatch: # Allows manual verification
 
 jobs:
-  scheduled-task:
+  nightly-job:
     runs-on: ubuntu-latest
     steps:
-      - name: Run Heartbeat
-        run: echo "Scheduled cron triggered at $(date -u)"
+      - name: Run maintenance
+        run: echo "Executing scheduled maintenance task"
