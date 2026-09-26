@@ -1,99 +1,25 @@
-name: 12 - Environment Variable Scopes
+name: 12 Environment Variable Scopes
+on: workflow_dispatch
 
-on:
-  workflow_dispatch:
-
-# ============================================================
-# WORKFLOW-LEVEL ENVIRONMENT VARIABLES
-# Available to ALL jobs and steps
-# ============================================================
 env:
-  SCOPE: "workflow-level"
-  STAGE: "global"
-  GLOBAL_FLAG: "true"
+  GLOBAL_SCOPE: "Available to all jobs and steps"
 
 jobs:
-
-  # ==========================================================
-  # JOB 1
-  # Demonstrates workflow-level → job-level → step-level
-  # ==========================================================
-  job1:
-    name: Test Scopes
+  scope-demo:
     runs-on: ubuntu-latest
-
-    # JOB-LEVEL variables
-    # These override workflow-level variables
     env:
-      NAME: "Test"
-      SCOPE: "job-level"
-
+      JOB_SCOPE: "Available only inside scope-demo job"
     steps:
-
-      - name: Inspect Job 1
-        # STEP-LEVEL variable
-        # This overrides the job-level SCOPE
+      - name: Step with local scope
         env:
-          SCOPE: "step-level"
-
+          STEP_SCOPE: "Available only in this step"
         run: |
-          echo "===== JOB 1 ====="
-          echo "SCOPE: $SCOPE"
-          echo "STAGE: $STAGE"
-          echo "GLOBAL_FLAG: $GLOBAL_FLAG"
-          echo "NAME: $NAME"
+          echo "$GLOBAL_SCOPE"
+          echo "$JOB_SCOPE"
+          echo "$STEP_SCOPE"
 
-
-  # ==========================================================
-  # JOB 2
-  # Demonstrates job-level SCOPE without NAME
-  # ==========================================================
-  job2:
-    name: Build Scopes
-    runs-on: ubuntu-latest
-
-    # JOB-LEVEL variable
-    env:
-      SCOPE: "job-level"
-
-    steps:
-
-      - name: Inspect Job 2
-        # STEP-LEVEL variable
-        env:
-          SCOPE: "step-level"
-
+      - name: Step without local scope
         run: |
-          echo "===== JOB 2 ====="
-          echo "SCOPE: $SCOPE"
-          echo "STAGE: $STAGE"
-          echo "GLOBAL_FLAG: $GLOBAL_FLAG"
-
-
-  # ==========================================================
-  # JOB 3
-  # Demonstrates overriding NAME at STEP level
-  # ==========================================================
-  job3:
-    name: Final Scopes
-    runs-on: ubuntu-latest
-
-    # JOB-LEVEL variables
-    env:
-      NAME: "Student"
-      SCOPE: "job-level"
-
-    steps:
-
-      - name: Inspect Job 3
-        # STEP-LEVEL variables
-        env:
-          NAME: "Teacher"
-          SCOPE: "step-level"
-
-        run: |
-          echo "===== JOB 3 ====="
-          echo "SCOPE: $SCOPE"
-          echo "STAGE: $STAGE"
-          echo "GLOBAL_FLAG: $GLOBAL_FLAG"
-          echo "NAME: $NAME"
+          echo "$GLOBAL_SCOPE"
+          echo "$JOB_SCOPE"
+          echo "Step scope: ${STEP_SCOPE:-empty}"
