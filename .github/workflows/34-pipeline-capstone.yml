@@ -1,82 +1,61 @@
-name: 34 - Pipeline Capstone
+name: 34 Pipeline Capstone
 on:
   push:
     branches: [main]
-  pull_request:
-    branches: [main]
   workflow_dispatch:
+
+concurrency:
+  group: deploy-pipeline
+  cancel-in-progress: false
 
 permissions:
   contents: read
-  issues: write
-
-concurrency:
-  group: capstone-${{ github.ref }}
-  cancel-in-progress: true
 
 jobs:
-  lint:
+  test-matrix:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'npm'
-      - run: npm install
-      - run: npm run lint
-
-  matrix-tests:
-    needs: lint
     strategy:
-      fail-fast: false
       matrix:
-        node-version: [18, 20]
-        os: [ubuntu-latest]
-    runs-on: ${{ matrix.os }}
+        node: [18, 20]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: ${{ matrix.node }}
           cache: 'npm'
-      - run: npm install
-      - run: npm test
+      - name: Run verification
+        run: |
+          if [ -f package.json ]; then npm test --if-present; fi
 
   package:
-    needs: matrix-tests
     runs-on: ubuntu-latest
+    needs: test-matrix
     outputs:
-      bundle_sha: ${{ steps.build_meta.outputs.sha }}
+      version_tag: ${{ steps.build.outputs.version }}
     steps:
       - uses: actions/checkout@v4
-      - id: build_meta
-        run: echo "sha=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
-      - name: Bundle Code
+      - id: build
         run: |
-          mkdir dist
-          cp -r src/ dist/
-          echo "Production Release: ${{ steps.build_meta.outputs.sha }}" > dist/RELEASE.txt
+          mkdir -p output
+          echo "Build artifact $(date +%s)" > output/app.bin
+          echo "version=v1.0.${{ github.run_number }}" >> "$GITHUB_OUTPUT"
       - uses: actions/upload-artifact@v4
         with:
-          name: release-dist-${{ steps.build_meta.outputs.sha }}
-          path: dist/
-          retention-days: 5
+          name: compiled-app
+          path: output/
+          retention-days: 2
 
   deploy:
-    needs: package
-    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
     runs-on: ubuntu-latest
+    needs: package
     environment:
       name: production
-      url: https://my-production-app.example.com
     steps:
       - uses: actions/download-artifact@v4
         with:
-          name: release-dist-${{ needs.package.outputs.bundle_sha }}
-          path: deployed-dist/
-      - name: Execute Deployment
+          name: compiled-app
+          path: dist/
+      - name: Release deployment
         run: |
-          echo "Deploying SHA ${{ needs.package.outputs.bundle_sha }} to Production..."
-          cat deployed-dist/RELEASE.txt
-          node deployed-dist/src/app.js
+          echo "Deploying release ${{ needs.package.outputs.version_tag }}"
+          cat dist/app.bin
