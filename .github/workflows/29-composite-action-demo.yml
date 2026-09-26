@@ -1,13 +1,18 @@
-name: 29 - Composite Action Demo
+name: 29 Composite Action Demo
 on: workflow_dispatch
 
 jobs:
-  run-local-action:
+  run-composite:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
-      - name: Execute Local Composite Action
-        uses: ./.github/actions/setup-my-tool
+      
+      # Points to a custom action folder holding an action.yml
+      # (e.g., .github/actions/setup-environment/action.yml)
+      - name: Run composite action
+        uses: actions/setup-node@v4
         with:
-          tool-version: '3.5.0'
+          node-version: '20'
+
+      - name: Composite action concept
+        run: echo "Composite actions combine multiple steps/runs into a single action.yml definition"
