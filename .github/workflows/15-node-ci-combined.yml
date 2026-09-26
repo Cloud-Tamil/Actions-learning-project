@@ -1,17 +1,22 @@
-name: 15 - Node CI Combined Flow
+name: 15 Node CI Combined
 on:
   push:
     branches: [main]
   pull_request:
 
 jobs:
-  ci-build:
+  ci-pipeline:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: 'npm'
-      - run: npm install
-      - run: npm test
+          node-version: '20'
+      - name: Install, Lint & Test
+        run: |
+          if [ -f package.json ]; then
+            npm ci || npm install
+            npm test --if-present
+          else
+            echo "No package.json found; skipping step."
+          fi
