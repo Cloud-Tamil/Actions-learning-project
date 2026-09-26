@@ -1,16 +1,13 @@
-name: 23 - Matrix Fail Fast and Max Parallel
+name: 23 Matrix Tuning
 on: workflow_dispatch
 
 jobs:
-  matrix-controls:
-    runs-on: ubuntu-latest
+  tuned-matrix:
     strategy:
-      fail-fast: false  # Keeps sister jobs running if one fails
-      max-parallel: 2   # Throttles execution to 2 jobs concurrently
+      fail-fast: false # Keep other jobs running even if one fails
+      max-parallel: 2  # Concurrency limit
       matrix:
-        suite: [unit, integration, regression, security]
+        target: [1, 2, 3, 4]
+    runs-on: ubuntu-latest
     steps:
-      - name: Execute Suite
-        run: |
-          echo "Executing test suite: ${{ matrix.suite }}"
-          sleep 4
+      - run: echo "Processing task ${{ matrix.target }}"
