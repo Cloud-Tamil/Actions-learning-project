@@ -1,14 +1,21 @@
-name: 30 - Least-Privilege Permissions
+name: 30 Token Permissions
 on: workflow_dispatch
 
-# Explicitly scopes down the automated GITHUB_TOKEN
+# Top-level: Restrict GITHUB_TOKEN to read-only by default
 permissions:
   contents: read
-  issues: write
 
 jobs:
-  verify-permissions:
+  read-job:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - run: echo "GITHUB_TOKEN explicitly limited to read contents and write issues."
+      - run: echo "Job runs under minimal read permissions"
+
+  write-job:
+    runs-on: ubuntu-latest
+    # Elevated permissions scoped strictly to this job
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - run: echo "Job elevated to create tags/write to PRs"
