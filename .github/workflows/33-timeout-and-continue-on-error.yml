@@ -1,17 +1,16 @@
-name: 33 - Timeouts and Failure Handling
+name: 33 Timeout and Continue On Error
 on: workflow_dispatch
 
 jobs:
-  resilient-pipeline:
+  resilience-job:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 10 # Hard boundary preventing runaway runner billing
     steps:
-      - name: Transient Step (Tolerates Failure)
-        timeout-minutes: 2
-        continue-on-error: true
+      - name: Non-critical linter
+        continue-on-error: true # Step fails without breaking the entire workflow
         run: |
-          echo "Simulating failure step..."
+          echo "Testing experimental rule..."
           exit 1
 
-      - name: Next Step
-        run: echo "This step runs even though the previous step failed."
+      - name: Critical downstream step
+        run: echo "This step executes even though the experimental linter failed"
