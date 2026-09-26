@@ -1,13 +1,9 @@
-# The display title visible under the repository's "Actions" tab.
-# on: push: The event that kicks off the workflow (any commit pushed to any branch).   
-# runs-on: ubuntu-latest: Requests an Ubuntu Linux virtual machine from GitHub's runner pool.   
-# run: Executes a standard bash shell command on the runner.   
 name: 01 Hello World
+on: workflow_dispatch
 
-on: [workflow_dispatch]
 jobs:
   say-hello:
     runs-on: ubuntu-latest
     steps:
-      - name: Print a greeting
+      - name: Print greeting
         run: echo "Hello, GitHub Actions!"
