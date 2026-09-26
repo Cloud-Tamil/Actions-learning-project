@@ -1,18 +1,18 @@
-name: 32 - Concurrency Controls
+name: 32 Concurrency Management
 on:
-  push:
+  pull_request:
     branches: [main]
 
+# Auto-cancels outdated CI runs for the same branch/PR when new commits are pushed
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true # Cancels running build if a new commit is pushed
+  cancel-in-progress: true
 
 jobs:
   long-build:
     runs-on: ubuntu-latest
     steps:
-      - name: Simulate Build
+      - name: Simulate build workload
         run: |
-          echo "Starting slow task..."
-          sleep 15
-          echo "Finished task."
+          echo "Building commit ${{ github.sha }}..."
+          sleep 30
